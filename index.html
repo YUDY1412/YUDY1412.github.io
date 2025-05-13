@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Hybrid Gripper with Passive Pneumatic Soft Joints for Grasping Deformable Thin Objects">
+  <meta name="keywords" content="Mechantronics; Robotic Applications; Pneumatic Soft Grippers">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ICRA-Hybrid Gripper</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.png"> -->
+  <link rel="icon" type="image/svg+xml" href="./static/images/favicon.svg" />
+  <link rel="icon" type="image/png" href="./static/images/favicon.png" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <!-- <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script> -->
+  
+  <style>
+	.logo-row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		max-width: 600px;
+		flex-wrap: wrap;
+		margin: 20px 0 40px 20px;
+	}
+
+	
+	.logo {
+		display: block;
+		height: auto;
+		max-width: 100%;
+	}
+	
+	.logo-1 {
+		height: 120px;
+		margin-right: 50px;
+	}
+	
+	.logo-2 {
+		height: 120px;
+		margin-right: 30px;
+	}
+	
+	.logo-3 {
+		height: 124px;
+		margin-right: 0px;
+	}
+</style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://hust.edu.vn/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+<!--
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://mit-realm.github.io/dgppo/">
+            DGPPO: Discrete GCBF Proximal Policy Optimization for Multi-agent Safe Optimal Control
+          </a>
+          <a class="navbar-item" href="https://mit-realm.github.io/def-marl/">
+            Def-MARL: Distributed Epigraph Form Multi-agent Reinforcement Learning
+          </a>
+          <a class="navbar-item" href="https://mit-realm.github.io/gcbfplus/">
+            GCBF+: A Neural Graph Control Barrier Function Framework for Distributed Safe Multi-Agent Control
+          </a>
+          <a class="navbar-item" href="https://mit-realm.github.io/gcbf-website/">
+            GCBFv0: Neural Graph Control Barrier Functions for Distributed Safe Multi-agent Control
+          </a>
+          <a class="navbar-item" href="https://arxiv.org/abs/2311.13714">
+            Survey: Learning Safe Control for Multi-Robot Systems: Methods, Verification, and Open Challenges
+          </a>
+          <a class="navbar-item" href="https://realm.mit.edu">
+            REALM Website
+          </a>
+        </div>
+      </div>
+	  -->
+    </div>
+  </div>
+</nav>
+
+<!-- Logo display	-->
+<div style="display: flex; justify-content: center;">
+<div style="display: flex;" class="logo-row">
+  <img src="./static/images/HustLogo.png" alt="Logo 1" class="logo logo-1">
+  <img src="./static/images/LivUniLogo.png" alt="Logo 2" class="logo logo-2">
+  <img src="./static/images/TouDaiLogo.png" alt="Logo 3" class="logo logo-3">
+</div>
+</div>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Hybrid Gripper with Passive Pneumatic Soft Joints for Grasping Deformable Thin Objects</h1>
+          <div class="is-size-5 publication-authors">
+		  <!-- With embedded profile links
+            <span class="author-block">
+              <a href="https://hust.edu.vn/">Ngoc-Duy Tran</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://hust.edu.vn/">Hoang-Hiep Ly</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://hust.edu.vn/">Xuan-Thuan Nguyen</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://hust.edu.vn/">Thi-Thoa Mac</a><sup>1</sup></span>
+			  -->
+			<span class="author-block">Ngoc-Duy Tran<sup>1</sup>,</span>
+			<span class="author-block">Hoang-Hiep Ly<sup>1</sup>,</span>
+			<span class="author-block">Thi-Thoa Mac<sup>1</sup>,</span>
+			<span class="author-block">		
+              <a href="https://scholar.google.co.uk/citations?user=gEbaF0sAAAAJ">Anh Nguyen</a><sup>2</sup></span>
+			<span class="author-block">
+              <a href="https://scholar.google.co.jp/citations?user=KUqlbGUAAAAJ">Tung D. Ta</a><sup>3</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Hanoi University of Science and Technology,</span>
+            <span class="author-block"><sup>2</sup>University of Liverpool,</span>
+			<span class="author-block"><sup>3</sup>University of Tokyo</span>
+		  </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="static/ICRA2025.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2410.05789"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=RvZvMrlsr4o"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=RvZvMrlsr4o"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Presentation Video</span>
+                </a>
+              </span> -->
+              <!-- Poster Link. -->
+              <span class="link-block">
+                <a href="static/ICRA Poster.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-image"></i>
+                  </span>
+                  <span>Poster</span>
+                </a>
+              </span>
+              <!-- Appendix Link. -->
+              <!-- <span class="link-block">
+                <a href="static/appendix.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Appendix</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/DucTato/DucTato.github.io"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hero teaser (might be needed for future use -->
+<!--	
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3"><center>A proposition aiming at the versatility of current robotic systems.</center></h2>
+    </div>
+  </div>
+</section>
+-->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Grasping a variety of objects remains a key
+			challenge in the development of versatile robotic systems. The
+			human hand is remarkably dexterous, capable of grasping
+			and manipulating objects with diverse shapes, mechanical
+			properties, and textures. Inspired by how humans use two
+			fingers to pick up thin and large objects such as fabric or
+			sheets of paper, we aim to develop a gripper optimized for
+			grasping such deformable objects. Observing how the soft and
+			flexible fingertip joints of the hand approach and grasp thin
+			materials, a hybrid gripper design that incorporates both soft
+			and rigid components was proposed. The gripper utilizes a soft
+			pneumatic ring wrapped around a rigid revolute joint to create
+			a flexible two-fingered gripper. Experiments were conducted to
+			characterize and evaluate the gripper performance in handling sheets of paper and other objects. 
+			Compared to rigid grippers,the proposed design improves grasping 
+			efficiency and reduces the gripping distance by up to eightfold. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+  <div style="text-align: center; margin: 40px 0;">
+  <div style="display: inline-block; width: 40%;">
+    <img src="./static/images/figure1.png" alt="Introduction" style="width: 100%; height: auto;">
+    <div style="font-size: 13px; color: #555; margin-top: 10px;">
+      Hybrid gripper with soft pneumatic rings is used to grasp deformable objects, thin objects, and a variety of other objects.
+    </div>
+  </div>
+</div>
+
+<section class="section">
+	<div class="container is-max-desktop">
+	<div class="columns is-centered has-text-centered">
+	<div class="column is-four-fifths">
+		<h2 class="title is-3">Design and Prototype</h2>
+			<div class="content has-text-justified">
+				
+			<p>
+			Soft grippers show great flexibility in grasping various shaped 
+			objects when compared to conventional rigid grippers. In addition, soft 
+			grippers have been shown to be safe for handling fragile items without 
+			causing damage and are safe for humans because of the soft materials that 
+			they were made of.
+			
+			</p>
+			<p>
+			This study was inspired by the human fingers grasping a sheet of paper larger than the size of an average hand palm and hypothesized 
+			that the bending of the distal phalanx and the stiffness of the distal interphalangeal (DIP) joints 
+			are the key factors in allowing the human and (or gripper in this case) to pick up large or thin objects. And such, a hybrid gripper prototype was developed. 
+			With a soft component attached to the joints to simulate the stiffness of the DIP joints and controlled by air pressure, this gripper is capable of grasping various objects 
+			by bending its joints similar to that of a human finger.
+			</p>
+			<!-- illustrative figure -->
+			<div style="text-align: center; margin: 40px 0;">
+				<div style="display: inline-flex; gap: 20px; flex-wrap: wrap;">
+				<img src="static/images/humFinger.png" alt="Image 1" style="width: 300px; height: auto;">
+				<img src="static/images/figure2.png" alt="Image 2" style="width: 300px; height: auto;">
+				</div>
+				<div style="margin-top: 10px; font-size: 13px; color: #555;">
+				The design is very human.
+				</div>
+			</div>
+			<!-- illustrative figure -->
+				<p>
+				The gripper in this study is simplified from the human finger anatomy. Each finger consists of two links: <em>the proximal link</em> (referred to as finger body) and <em>the distal link</em> 
+				(which includes the fingertip and fingertip adapter). 
+				</p>
+				<!-- illustrative figure -->
+				<div style="text-align: center; margin: 40px 0;">
+					<div style="display: inline-block; width: 70%;">
+					<img src="./static/images/figure3.png" alt="Finger Prototype" style="width: 100%; height: auto;">
+					<div style="font-size: 13px; color: #555; margin-top: 10px;">
+					Hybrid gripper platform (a) with exploded view (b) and dimensions (c) of the finger and the final assembled prototype (d).
+					</div>
+					</div>
+				</div>
+				<!-- illustrative figure -->
+				
+				<p>
+				The fingertip resembles the distal phalanx of a human finger with the contact suface having a curved shape to ensure a constant contact area when 
+				the gripper touches a flat surface. The proximal link and distal link can rotate up to 80&deg; in either direction around the revolution point. Additionally, 
+				the tip is padded with a thin silicone pad to increase friction.
+				</p>
+				<!-- illustrative figure -->
+				<div style="text-align: center; margin: 40px 0;">
+					<div style="display: inline-block; width: 60%;">
+					<img src="./static/images/figure5.png" alt="Soft Pneumatic Ring" style="width: 100%; height: auto;">
+					<div style="font-size: 13px; color: #555; margin-top: 10px;">
+					Soft pneumatic ring that covers the entire joint.
+					</div>
+					</div>
+				</div>
+				<!-- illustrative figure -->
+				<p>
+				A soft pneumatic ring is attached to the joint of the finger to adjust the stiffness of the revolution point. 
+				The ring also has a fabric layer to restrict movements and to gain control of the joint, and as air pressure is applied, 
+				it will simulate stiffness on the joint similar to the DIP joint of a real human finger.
+				</p>
+				
+				<!-- illustrative figure -->
+				<div style="text-align: center; margin: 40px 0;">
+					<div style="display: inline-flex; gap: 10px; flex-wrap: wrap;">
+					<img src="./static/images/figure4.png" alt="Pneumatic system" style="width: 150px; height: auto;">
+					<img src="./static/images/figure6.png" alt="Finger joint w/ soft component" style="width: 450px; height: auto;">
+					</div>
+					<div style="font-size: 13px; color: #555; margin-top: 10px;">
+					Air pressure is applied to the ring via a silicone tube.
+					</div>
+				</div>
+				<!-- illustrative figure -->
+			</div>
+		</div>
+	</div>
+	</div>
+
+</section>
+
+<section class="section">
+	<div class="container is-max-desktop">
+	<div class="columns is-centered has-text-centered">
+	<div class="column is-four-fifths">
+		<h2 class="title is-3">Experiments</h2>
+		<div class="content has-text-justified">
+		
+			<!-- illustrative figure -->
+				<div style="text-align: center; margin: 40px 0;">
+					<div style="display: inline-block; width: 40%;">
+					<img src="./static/images/figure7.png" alt="Torque - Angle Relation" style="width: 100%; height: auto;">
+					<div style="font-size: 13px; color: #555; margin-top: 10px;">
+					Torque generated by the soft pneumatic ring on the fingertip of the gripper.
+					</div>
+					</div>
+				</div>
+			<!-- illustrative figure -->
+				
+			<p>
+				Torque generated by the soft pneumatic ring strongly corelated to the bending angle &alpha; 
+				and the input pressure. The increment of either the bending angle or the input pressure will result in the increment of 
+				the resistance torque or the stiffness of the finger joint. Within the torque range of 150-400 N·mm, the pressure and 
+				the bend angle are relatively proportional. This indicates that with high pressure and a sufficiently large bending angle, 
+				the likelihood of successfully grasping objects will be higher.
+			</p>
+			
+			<!-- illustrative figure -->
+				<div style="text-align: center; margin: 40px 0;">
+					<div style="display: inline-block; width: 40%;">
+					<img src="./static/images/figure9.png" alt="Success rate w/ different objects" style="width: 100%; height: auto;">
+					<div style="font-size: 13px; color: #555; margin-top: 10px;">
+					Success rate of the proposed design when grapping various objects.
+					</div>
+					</div>
+				</div>
+			<!-- illustrative figure -->
+				<p>
+				This design performs better with deformable objects and falls 
+				behind when it comes to objects with sharp edges or small contact area.
+				</p>
+				
+			<!-- illustrative figure -->
+				<div style="text-align: center; margin: 40px 0;">
+					<div style="display: inline-block; width: 100%;">
+					<img src="./static/images/figure8.png" alt="Success rate comp. w/ rigid gripper" style="width: 100%; height: auto;">
+					<div style="font-size: 13px; color: #555; margin-top: 10px;">
+					Success rate of normal conventional rigid gripper.
+					</div>
+					</div>
+				</div>
+			<!-- illustrative figure -->
+			<p>
+			Closing distance of the proposed hybrid gripper design obtains better success rate (up to 90%).
+			</p>
+			</div>
+		</div>
+	</div>
+	</div>
+
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+		  <iframe width="560" height="315" src="https://www.youtube.com/embed/Mo-Tq39jVWQ?si=_PAXq2L4-icDi0lq" title="YouTube video player" 
+		  frameborder="1" allow="accelerometer; autoplay; clipboard-write; 
+		  encrypted-media; picture-in-picture; web-share" 
+		  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <!-- TODO: Main point 1 -->
+	  <!--
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">TODO: main point 1</h2>
+          <img src="./static/images/TODO.png"
+            class="center-image simulation-image"
+            alt="TODO: alt text"/>
+        </div>
+      </div> -->
+      <!--/ TODO: Main point 1 -->
+
+      <!-- TODO: Main point 2 -->
+	  <!--
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">TODO: main point 2</h2>
+          <img src="./static/images/TODO.png"
+            class="center-image simulation-image"
+            alt="TODO: alt text"/>
+        </div>
+      </div> -->
+      <!--/ TODO: Main point 2 -->
+
+      <!-- TODO: Main point 3 -->
+       <!--
+	   <div class="column">
+        <div class="content">
+          <h2 class="title is-3">TODO: main point 3</h2>
+          <img src="./static/images/TODO.png"
+            class="center-image simulation-image"
+            alt="TODO: alt text"/>
+        </div>
+      </div> -->
+      <!--/ TODO: Main point 3 -->
+
+    <!-- Concurrent Work. -->
+	<!--
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            This work is part of a broader research thread around <b>learning reliable controllers for multi-agent systems</b>. For a survey of the field, see <a rel="survey" href="https://arxiv.org/pdf/2311.13714.pdf">this paper</a>.
+          </p>
+          <p>
+            Other work on learning reliable controllers for multi-agent systems include:
+            <ul>
+              <li><a href="https://mit-realm.github.io/dgppo/">DGPPO: Discrete GCBF Proximal Policy Optimization for Multi-agent Safe Optimal Control</a>.</li>
+              <li><a href="https://mit-realm.github.io/def-marl/">Def-MARL: Solving Multi-Agent Safe Optimal Control with
+                Distributed Epigraph Form MARL</a>.</li>
+              <li><a href="https://mit-realm.github.io/gcbfplus/">GCBF+: A Neural Graph Control Barrier Function Framework for Distributed Safe Multi-Agent Control</a>.</li>
+              <li><a href="https://mit-realm.github.io/gcbf-website/">GCBFv0: Neural Graph Control Barrier Functions Guided Distributed Collision-avoidance Multi-agent Control</a>.</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+	-->
+    <!--/ Concurrent Work. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{tran2024hybridgripperpassivepneumatic,
+      title={Hybrid Gripper with Passive Pneumatic Soft Joints for Grasping Deformable Thin Objects}, 
+      author={Ngoc-Duy Tran and Hoang-Hiep Ly and Xuan-Thuan Nguyen and Thi-Thoa Mac and Anh Nguyen and Tung D. Ta},
+      year={2024},
+      eprint={2410.05789},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2410.05789}, 
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+            This webpage template is based that used by <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            We sincerely thank <a href="https://keunhong.com/">Keunhong Park</a> for developing and open-sourcing this template.
+          </p>
+        </div>
+      </div>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
